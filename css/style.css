@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    border: solid 2px red;
+    height: 25vh;
+    max-width: 600px;
+}
+.item{
+    margin: 5px;
+    align-items: center;
+    padding: 5px;
+    max-width: 100px;
+}
+
+input{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 5px 0;
+    width: 20%;
+}
