@@ -1,6 +1,7 @@
 .container {
     display: flex;
     border: solid 2px red;
+    border-radius: 4px;
     height: 25vh;
     max-width: 600px;
 }
@@ -16,5 +17,17 @@ input{
     border: 1px solid #ccc;
     border-radius: 4px;
     margin: 5px 0;
-    width: 20%;
+    width: 30%;
+}
+p{
+    font: 1em comic sans ms;
+}
+
+h1{
+    font: 3em sans-serif;
+}
+.account{
+    max-width: 800px;
+    text-align: right;
+    display: flex;
 }
