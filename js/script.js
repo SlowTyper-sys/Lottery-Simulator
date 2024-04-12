@@ -1,112 +1,85 @@
 const checkbutton = document.getElementById('bet');
 
-checkbutton.onclick = function(){
-    //let betlist = [Number(document.getElementById("n1").value), Number(document.getElementById("n2").value), Number(document.getElementById("n3").value), Number(document.getElementById("n4").value), Number(document.getElementById("n5").value)];
-    let list = []
-    let lotto = []
+checkbutton.onclick = function() {
+    let list = [];
+    let lotto = [];
     let pb = Number(document.getElementById("pb").value);
-    if( !pb == null){ 
+    let demo = document.getElementById("demo");
+    let lottoDisplay = document.getElementById("lotto");
+    let userDisplay = document.getElementById("user");
+    let winningsDisplay = document.getElementById("winnings");
+
+    // Validate bonus ball
+    if (pb < 1 || pb > 36 || isNaN(pb)) { 
         alert("Please enter a number between 1 and 36 for the bonus ball");
+        return;
     }
 
-    //this is for the numbers that the user puts in
-    for (let i = 1; i <=5; i++) {
-        let digit = Number(document.getElementById("n"+i).value);
-        if  (digit >= 1 && digit <= 69 && digit != null) {
-        list[i-1] = digit;
-        }else{
-            alert("Please enter a number between 1 and 69");
-            break;
+    // User input validation and populating list
+    for (let i = 1; i <= 5; i++) {
+        let digit = Number(document.getElementById("n" + i).value);
+        if (digit >= 1 && digit <= 69 && !isNaN(digit)) {
+            list.push(digit);
+        } else {
+            alert("Please enter a number between 1 and 69 for input " + i);
+            return;
         }
     }
 
-    //this is for the random numbers that the computer generates
-    for (let i = 0; i <=4; i++) {
-        lotto[i] = Math.floor(Math.random() * 69) + 1;
+    // Generate random numbers for lotto
+    for (let i = 0; i < 5; i++) {
+        lotto.push(Math.floor(Math.random() * 69) + 1);
     }
     
     let lotto_pb = Math.floor(Math.random() * 26) + 1;
-    document.getElementById("lotto").innerHTML = "Winning Numbers: " + lotto;
-    document.getElementById("user").innerHTML = "Your Numbers: " + list + " Powerball: " + pb;
+    lottoDisplay.innerHTML = "Winning Numbers: " + lotto;
+    userDisplay.innerHTML = "Your Numbers: " + list + " Powerball: " + pb;
 
-    let acc =  Number(document.getElementById("demo").innerHTML);
-    //alert(acc);
-    if (acc > 0) {
-        acc = acc - 4;
-        document.getElementById("demo").innerHTML = acc;
-       // alert(acc + " left");
+    let acc =  Number(demo.innerHTML);
 
-
-    //this is for the comparison
+    // Comparison of user numbers and lotto numbers
     let matches = 0;
-    let total = 0;
-
-     for (let i = 0; i < list.length; i++) {
-            for (let j = 0; j < lotto.length; j++) {
-                if (list[i] == lotto[j]) {
-                    matches += 1;
-                } 
-            }
+    for (let i = 0; i < list.length; i++) {
+        if (lotto.includes(list[i])) {
+            matches++;
         }
-        alert(matches + " matches");
+    }
 
-    // if they got the powerball number correctly then:
-    if({lotto_pb} == {pb}){
+    // Calculate winnings
+    let total = 0;
+    if (pb === lotto_pb) {
         switch (matches) {
             case 1:
                 total += 4;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 2:
                 total += 7;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 3:
                 total += 100;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 4:
                 total += 50000;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 5:
                 total += 1000000;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
-                break;
-        
-            default:
-                document.getElementById("winings").innerHTML = "Sorry, you didn't win anything!";
                 break;
         }
-    } else{
+    } else {
         switch (matches) {
             case 3:
                 total += 7;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 4:
                 total += 1000;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
                 break;
             case 5:
                 total += 1000000;
-                 document.getElementById("winings").innerHTML = "You have won: R"+ total;
-                 document.getElementById("demo").innerHTML = acc + total;
-                break;
-        
-            default:
-                document.getElementById("winings").innerHTML = "Sorry, you didn't win anything!";
                 break;
         }
     }
-    }
     
-    //alert(lotto);
-}
+    // Update winnings and account balance
+    winningsDisplay.innerHTML = total ? "You have won: R" + total : "Sorry, you didn't win anything!";
+    demo.innerHTML = acc + total;
+};
